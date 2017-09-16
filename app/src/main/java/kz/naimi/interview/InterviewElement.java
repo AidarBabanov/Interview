@@ -19,4 +19,9 @@ public class InterviewElement {
     public void setVideoAnswer(String videoAnswer) {
         this.videoAnswer = videoAnswer;
     }
+
+    @Override
+    public String toString() {
+        return getQuestion();
+    }
 }
