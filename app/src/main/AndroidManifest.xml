@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="kz.naimi.interview">
 
-
     <uses-permission android:name="android.permission.CAMERA"/>
+
     <uses-feature android:name="android.hardware.camera"/>
+
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
@@ -22,8 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".QuestionActivity">
-        </activity>
-        <activity android:name=".VideoActivity">
         </activity>
         <activity android:name=".PostInterviewActivity">
         </activity>
