@@ -7,11 +7,12 @@ import com.jcraft.jsch.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URI;
+import java.util.List;
 
 public class SendVideoToSFTPServerAsyncTask extends AsyncTask<Void, Void, Void> {
 
     private String filepath = "";
-
+    private int position;
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -33,7 +34,7 @@ public class SendVideoToSFTPServerAsyncTask extends AsyncTask<Void, Void, Void> 
             ChannelSftp sftp = (ChannelSftp) channel;
             Log.i("Connected", "Connected mother fucker");
             try {
-                sftp.cd("/home");
+                sftp.cd("/root");
             } catch (SftpException e) {
                 e.printStackTrace();
             }
@@ -50,11 +51,14 @@ public class SendVideoToSFTPServerAsyncTask extends AsyncTask<Void, Void, Void> 
                 Log.i("File Sftp put", e.getMessage());
             }
             //sftp.put(filepath, "");
-
             Boolean success = true;
 
             if(success){
-                // The file has been uploaded succesfully
+                List<InterviewElement> interview = SingletonVariableShare.getInstance().getInterview();
+                InterviewElement interviewElement = interview.get(position);
+                interviewElement.setUploaded(true);
+                interview.set(position, interviewElement);
+                SingletonVariableShare.getInstance().setInterview(interview);
             }
 
             channel.disconnect();
@@ -68,5 +72,13 @@ public class SendVideoToSFTPServerAsyncTask extends AsyncTask<Void, Void, Void> 
 
     public void setFilepath(String filepath) {
         this.filepath = filepath;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

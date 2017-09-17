@@ -3,6 +3,7 @@ package kz.naimi.interview;
 public class InterviewElement {
     private String question;
     private String videoAnswer;
+    private boolean uploaded = false;
 
     public String getQuestion() {
         return question;
@@ -23,5 +24,13 @@ public class InterviewElement {
     @Override
     public String toString() {
         return getQuestion();
+    }
+
+    public boolean isUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(boolean uploaded) {
+        this.uploaded = uploaded;
     }
 }

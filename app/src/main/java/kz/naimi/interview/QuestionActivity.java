@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.afollestad.materialcamera.MaterialCamera;
 
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class QuestionActivity extends AppCompatActivity {
     private Integer currentQuestion;
 
     private MaterialCamera materialCamera;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@ public class QuestionActivity extends AppCompatActivity {
         materialCamera.defaultToFrontFacing(true);
         materialCamera.countdownImmediately(true);
         materialCamera.countdownMinutes(2.09f);
-        materialCamera.autoRecordWithDelayMs(5000);
+        materialCamera.autoRecordWithDelayMs(2000);
 
         startRecordingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,15 +68,16 @@ public class QuestionActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Saved to: " + data.getDataString(), Toast.LENGTH_LONG).show();
-                interviewElement.setVideoAnswer(data.getDataString());
+                interviewElement.setVideoAnswer(new File(URI.create(data.getDataString())).getName());
                 interview.set(currentQuestion, interviewElement);
                 SendVideoToSFTPServerAsyncTask sendVideoToSFTPServerAsyncTask = new SendVideoToSFTPServerAsyncTask();
                 sendVideoToSFTPServerAsyncTask.setFilepath(data.getDataString());
+                sendVideoToSFTPServerAsyncTask.setPosition(currentQuestion);
                 sendVideoToSFTPServerAsyncTask.execute();
-                if(currentQuestion+1<interview.size())startNewQuestion();
+                if (currentQuestion + 1 < interview.size()) startNewQuestion();
                 else startPostInterviewActivity();
 
-            } else if(data != null) {
+            } else if (data != null) {
                 Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
                 e.printStackTrace();
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -82,14 +85,15 @@ public class QuestionActivity extends AppCompatActivity {
         }
     }
 
-    private void startNewQuestion(){
+    private void startNewQuestion() {
         Intent intent = new Intent(this, QuestionActivity.class);
         SingletonVariableShare.getInstance().setInterview(interview);
-        int nextQuestion = currentQuestion+1;
-        intent.putExtra(Intent.EXTRA_TEXT, nextQuestion+"");
+        int nextQuestion = currentQuestion + 1;
+        intent.putExtra(Intent.EXTRA_TEXT, nextQuestion + "");
         startActivity(intent);
     }
-    private void startPostInterviewActivity(){
+
+    private void startPostInterviewActivity() {
         Intent intent = new Intent(this, PostInterviewActivity.class);
         startActivity(intent);
     }
