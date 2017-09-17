@@ -42,7 +42,10 @@ public class QuestionActivity extends AppCompatActivity {
         materialCamera.defaultToFrontFacing(true);
         materialCamera.countdownImmediately(true);
         materialCamera.countdownMinutes(2.09f);
-        materialCamera.autoRecordWithDelayMs(2000);
+        materialCamera.qualityProfile(MaterialCamera.QUALITY_480P);
+        materialCamera.videoEncodingBitRate(102400);
+        materialCamera.audioEncodingBitRate(50000);
+        materialCamera.autoRecordWithDelayMs(5000);
 
         startRecordingButton.setOnClickListener(new View.OnClickListener() {
             @Override

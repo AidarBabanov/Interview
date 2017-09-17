@@ -31,13 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
         interview = new LinkedList<>();
         InterviewElement ie1 = new InterviewElement();
-        ie1.setQuestion("Сколько лет Вы занимаетесь Вашим делом?");
+        ie1.setQuestion("Сколько шариков для\nгольфа поместится\nв школьный автобус?");
         interview.add(ie1);
         InterviewElement ie2 = new InterviewElement();
-        ie2.setQuestion("Нравится ли Вам Ваше дело?");
+        ie2.setQuestion("Сколько настройщиков\nпианино во всем мире?");
         interview.add(ie2);
         InterviewElement ie3 = new InterviewElement();
-        ie3.setQuestion("Анау-мынау, Сыир-бызау");
+        ie3.setQuestion("Почему крышка люка\nкруглая?");
         interview.add(ie3);
     }
 

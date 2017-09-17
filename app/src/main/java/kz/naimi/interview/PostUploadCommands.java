@@ -60,22 +60,16 @@ public class PostUploadCommands extends AsyncTask<Void, Void, Void> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            channelExec.setCommand("mkdir TESTDIRECTORY");
-            channelExec.connect();
-            channelExec.disconnect();
             List<InterviewElement> interview = SingletonVariableShare.getInstance().getInterview();
             String commandForAll = "";
+            String concat ="";
+
             for (InterviewElement i : interview) {
                 String command = "ffmpeg -i " + i.getVideoAnswer() + " -vf drawtext=\"fontfile=/path/to/font.ttf: \\\n" +
                         "text='" + i.getQuestion() + "': fontcolor=white: fontsize=24: box=1: boxcolor=black@0.5: \\\n" +
-                        "boxborderw=5: x=(w-text_w)-40: y=(h-text_h)-40\" -codec:a copy o" + i.getVideoAnswer()+" ; ";
+                        "boxborderw=5: x=(w-text_w)-40: y=(h-text_h)-40\" -codec:a copy -bsf:v h264_mp4toannexb -f mpegts o" + i.getVideoAnswer()+".ts ; ";
                 commandForAll=commandForAll+command;
-            }
-            String concat ="";
-            for (InterviewElement i : interview) {
-                String command = "ffmpeg -i o"+i.getVideoAnswer()+" -c copy -bsf:v h264_mp4toannexb -f mpegts "+i.getVideoAnswer()+".ts;\n+ ; ";
-                commandForAll=commandForAll+command;
-                concat=concat+i.getVideoAnswer()+".ts|";
+                concat=concat+"o"+i.getVideoAnswer()+".ts|";
             }
             commandForAll = commandForAll+"ffmpeg -i \"concat:"+concat+"\" -c copy -bsf:a aac_adtstoasc output.mp4;";
             channelExec.setCommand(commandForAll);
