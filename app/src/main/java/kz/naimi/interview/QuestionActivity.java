@@ -1,6 +1,7 @@
 package kz.naimi.interview;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.afollestad.materialcamera.MaterialCamera;
 
+import java.io.File;
 import java.util.List;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -30,7 +32,6 @@ public class QuestionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_question);
         questionTextView = (TextView) findViewById(R.id.question_textView);
         startRecordingButton = (Button) findViewById(R.id.start_recording_button);
-
 
         materialCamera = new MaterialCamera(this);
         materialCamera.allowRetry(false);
@@ -67,6 +68,9 @@ public class QuestionActivity extends AppCompatActivity {
                 Toast.makeText(this, "Saved to: " + data.getDataString(), Toast.LENGTH_LONG).show();
                 interviewElement.setVideoAnswer(data.getDataString());
                 interview.set(currentQuestion, interviewElement);
+                SendVideoToSFTPServerAsyncTask sendVideoToSFTPServerAsyncTask = new SendVideoToSFTPServerAsyncTask();
+                sendVideoToSFTPServerAsyncTask.setFilepath(data.getDataString());
+                sendVideoToSFTPServerAsyncTask.execute();
                 if(currentQuestion+1<interview.size())startNewQuestion();
                 else startPostInterviewActivity();
 
